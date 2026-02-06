@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Ashanti 💖 Will You Be My Valentine?</title>
-
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -19,7 +18,6 @@
       text-align: center;
       overflow: hidden;
     }
-
     body::before {
       content: "";
       position: fixed;
@@ -27,7 +25,6 @@
       background: rgba(255, 182, 193, 0.6);
       z-index: -1;
     }
-
     .card {
       background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(6px);
@@ -37,7 +34,6 @@
       max-width: 420px;
       z-index: 2;
     }
-
     h1 { color: #ff4d6d; }
     p { font-size: 18px; }
     button {
@@ -54,7 +50,6 @@
     canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
   </style>
 </head>
-
 <body>
   <canvas id="confetti"></canvas>
 
@@ -69,7 +64,6 @@
   <script>
     let yesSize = 1;
     let musicStarted = false;
-    let music;
 
     const canvas = document.getElementById("confetti");
     const ctx = canvas.getContext("2d");
@@ -77,16 +71,20 @@
     canvas.height = window.innerHeight;
     let confetti = [];
 
+    // 🎵 Start YouTube audio dynamically
     function startMusic() {
-      if (!musicStarted) {
-        music = new Audio("luv.mp3"); // create audio dynamically
-        music.loop = true;
-        music.volume = 0.6;
-        music.play().catch(err => console.log("Music error:", err));
-        musicStarted = true;
-      }
-    }
+  if (!musicStarted) {
+    music = new Audio("https://CHBilliski.github.io/valentine-page/luv.mp3");
+    music.loop = true;
+    music.volume = 0.6;
+    music.play().catch(err => alert("Click the Yes button to start the music!"));
+    musicStarted = true;
+  }
+}
 
+
+
+    // Confetti functions
     function createConfetti() {
       confetti = [];
       for (let i = 0; i < 200; i++) {
@@ -113,8 +111,9 @@
       requestAnimationFrame(drawConfetti);
     }
 
+    // Yes button click
     function sayYes() {
-      startMusic(); // music starts on click
+      startMusic(); // Start music on click
       createConfetti();
       drawConfetti();
 
@@ -124,8 +123,9 @@
       `;
     }
 
+    // No button click
     function hesitate() {
-      startMusic(); // music starts on click
+      startMusic(); // Start music on click
 
       yesSize += 0.25;
       document.getElementById("yesBtn").style.transform = "scale(" + yesSize + ")";
