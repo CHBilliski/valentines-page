@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ashanti 💖 Will You Be My Valentine?</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url("https://i.pinimg.com/736x/5d/9b/3b/5d9b3b8f87c2a3c7a1d3f4f5d8b7e3c6.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 182, 193, 0.6);
+      z-index: -1;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(6px);
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      max-width: 420px;
+      z-index: 2;
+    }
+
+    h1 { color: #ff4d6d; }
+    p { font-size: 18px; }
+    button {
+      font-size: 18px;
+      padding: 12px 26px;
+      margin: 12px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .yes { background: #ff4d6d; color: white; font-size: 22px; }
+    .no { background: #ddd; }
+    canvas { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+  </style>
+</head>
+
+<body>
+  <canvas id="confetti"></canvas>
+
+  <div class="card">
+    <h1>Ashanti 💖</h1>
+    <p>I was wondering…<br>will you be my Valentine? 💘</p>
+
+    <button class="yes" id="yesBtn" onclick="sayYes()">Yes 💕</button>
+    <button class="no" id="noBtn" onclick="hesitate()">No 😢</button>
+  </div>
+
+  <script>
+    let yesSize = 1;
+    let musicStarted = false;
+    let music;
+
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let confetti = [];
+
+    function startMusic() {
+      if (!musicStarted) {
+        music = new Audio("luv.mp3"); // create audio dynamically
+        music.loop = true;
+        music.volume = 0.6;
+        music.play().catch(err => console.log("Music error:", err));
+        musicStarted = true;
+      }
+    }
+
+    function createConfetti() {
+      confetti = [];
+      for (let i = 0; i < 200; i++) {
+        confetti.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          r: Math.random() * 6 + 4,
+          speed: Math.random() * 3 + 2,
+          color: `hsl(${Math.random() * 360}, 100%, 70%)`
+        });
+      }
+    }
+
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach(p => {
+        ctx.beginPath();
+        ctx.fillStyle = p.color;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        p.y += p.speed;
+        if (p.y > canvas.height) p.y = -10;
+      });
+      requestAnimationFrame(drawConfetti);
+    }
+
+    function sayYes() {
+      startMusic(); // music starts on click
+      createConfetti();
+      drawConfetti();
+
+      document.querySelector(".card").innerHTML = `
+        <h1 style="font-size:40px;">YAYYYY 💖🐱🎉</h1>
+        <p style="font-size:22px;">Ashanti said YES!!!<br>Happy Valentine’s Day 💘</p>
+      `;
+    }
+
+    function hesitate() {
+      startMusic(); // music starts on click
+
+      yesSize += 0.25;
+      document.getElementById("yesBtn").style.transform = "scale(" + yesSize + ")";
+
+      const noBtn = document.getElementById("noBtn");
+      noBtn.style.position = "absolute";
+      noBtn.style.left = Math.random() * 80 + "vw";
+      noBtn.style.top = Math.random() * 80 + "vh";
+
+      if (yesSize > 2) noBtn.innerText = "You sure? 😏";
+      if (yesSize > 3) noBtn.innerText = "C’mon Ashanti 💕";
+      if (yesSize > 4) noBtn.innerText = "Okay stop playing 😭";
+    }
+
+    window.onresize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+  </script>
+</body>
+</html>
